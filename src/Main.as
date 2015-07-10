@@ -16,7 +16,7 @@ package
 	[SWF(width="512", height="384", frameRate='60')]
 	public class Main extends Sprite 
 	{
-		private var _p1:Player = new Player();
+		private var _p1:Player;
 		private var _p2:Player;
 		
 		public function Main() 
@@ -36,7 +36,7 @@ package
 			}
 			_p1 = new Player();
 			_p1.displayPers(this);
-			_p2 = new Player();
+			_p2 = new Player(false);
 			_p2.displayPers(this);
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyboardDown);
 			stage.addEventListener(KeyboardEvent.KEY_UP,onKeyboardUp);
@@ -45,8 +45,11 @@ package
 		
 		private function onKeyboardDown(event:KeyboardEvent):void
 		{
-			_p1.updateMoveDown(event);
-			_p2.updateMoveDown(event);
+			switch(event) {
+				default:
+				_p1.updateMoveDown(event);
+				_p2.updateMoveDown(event);
+			}
 		}
 		
 		private function onKeyboardUp(event:KeyboardEvent):void

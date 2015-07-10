@@ -18,17 +18,20 @@ package
 		private var _upBut:uint;
 		private var _downBut:uint;
 		
-		public function Player() 
+		public function Player(p1:Boolean=true) 
 		{
 			super();
-			_left = false;
-			_right = false;
-			_up = false;
-			_down = false;
-			_leftBut = Keyboard.LEFT;
-			_rightBut = Keyboard.RIGHT;
-			_downBut = Keyboard.DOWN;
-			_upBut = Keyboard.UP;
+			if (p1) {
+				_leftBut = Keyboard.LEFT;
+				_rightBut = Keyboard.RIGHT;
+				_downBut = Keyboard.DOWN;
+				_upBut = Keyboard.UP;
+			} else {
+				_leftBut = Keyboard.Q;
+				_rightBut = Keyboard.D;
+				_downBut = Keyboard.S;
+				_upBut = Keyboard.Z;
+			}
 		}
 		
 		public function move():void
