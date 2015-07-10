@@ -29,6 +29,11 @@ package
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			stage.color = 0x808080; //background color
+			game();
+		}
+		
+		private function game():void
+		{
 			for (var i:int = 0; i < 30; ++i)
 			{
 				var test:Personnage = new Personnage();
