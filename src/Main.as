@@ -1,8 +1,10 @@
 package
 {
 	import flash.display.ActionScriptVersion;
+	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.display.DisplayObjectContainer;
+	import flash.display.Shape;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.geom.Matrix;
@@ -18,6 +20,7 @@ package
 	{
 		private var _p1:Player;
 		private var _p2:Player;
+		private var _crowd:Vector.<DisplayObject>;
 		
 		public function Main() 
 		{
@@ -28,7 +31,16 @@ package
 		private function init(e:Event = null):void 
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
-			stage.color = 0x808080; //background color
+			//stage.color = 0x808080;
+			var border:Shape = new Shape();
+			
+			border.graphics.beginFill(0xFF0000, 0.5);
+			border.graphics.drawRect(2, 0, stage.stageWidth-2, 2);
+			border.graphics.drawRect(stage.stageWidth-2, 2, 2, stage.stageHeight-2);
+			border.graphics.drawRect(0, stage.stageHeight-2, stage.stageWidth-2, 2);
+			border.graphics.drawRect(0, 0, 2, stage.stageHeight-2);
+			border.graphics.endFill();
+			addChild(border);
 			game();
 		}
 		
@@ -36,13 +48,16 @@ package
 		{
 			for (var i:int = 0; i < 30; ++i)
 			{
-				var test:Personnage = new Personnage();
-				test.displayPers(this);
+				var test:Personnage = new Personnage(this);
 			}
-			_p1 = new Player();
-			_p1.displayPers(this);
-			_p2 = new Player(false);
-			_p2.displayPers(this);
+			_p1 = new Player(this);
+			_p2 = new Player(this, false);
+			
+			_crowd = new Vector.<DisplayObject>();
+			for (i = 0; i < this.numChildren; i++)
+				if (this.getChildAt(i) is DisplayObject)
+					_crowd.push(this.getChildAt(i));
+				
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyboardDown);
 			stage.addEventListener(KeyboardEvent.KEY_UP,onKeyboardUp);
 			stage.addEventListener(Event.ENTER_FRAME, evtStageEnterFrame);
@@ -67,6 +82,18 @@ package
 		{
 			_p1.move();
 			_p2.move();
+			_crowd.sort(sorty);
+			for (var i:int = 0; i < this.numChildren; i++ )
+			{
+				this.setChildIndex(_crowd[i], i);
+			}
+		}
+		
+		private function sorty(a:DisplayObject, b:DisplayObject):int
+		{
+			if (a.y > b.y) return 1;
+			if (a.y < b.y) return -1;
+			return 0;
 		}
 	}
 	
