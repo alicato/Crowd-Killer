@@ -10,6 +10,7 @@ package
 		private static const	pw:int = 10;
 		private static const	ph:int = 24;
 		private static const	pmhead:int = 2;
+		private static const	phead:int = 5;
 		
 		protected var			_alive:Boolean;
 		protected var			_img:Sprite;
@@ -25,10 +26,37 @@ package
 			var _posX:int = Math.random() * (GameEntity.WINDOWWIDTH - pw * 2) + pw;
 			var _posY:int = Math.random() * (GameEntity.WINDOWHEIGHT - ph * 2) + ph;
 			_alive = true;
+			/*_img.graphics.lineStyle(2, 0); // katana
+			_img.graphics.moveTo( -(pw / 2) - 1, 3);
+			_img.graphics.lineTo((pw / 2), -ph / 2);
+			_img.graphics.lineStyle();*/
+			
+			_img.graphics.beginFill(0); // ninja base
+			_img.graphics.drawEllipse( -(pw / 2), -(ph / 2), pw, pw);
 			_img.graphics.beginFill(0);
+			_img.graphics.drawRect( -(pw / 2), -(ph / 2) + pw / 2, pw, ph - pw);
+			
+			_img.graphics.beginFill(0xFFCD94);// ninja head
+			_img.graphics.drawEllipse( -(pw / 2) + pmhead, -(ph / 2) + pmhead, pw - pmhead * 2, pw - pmhead * 2);
+			_img.graphics.beginFill(0);
+			_img.graphics.drawRect( -(pw / 2), -(ph / 2) + pmhead * 3, pw, ph - pw + pmhead);
+			
+			_img.graphics.beginFill(0);// ninja clothes
+			_img.graphics.drawEllipse( -(pw / 2) + pmhead * 3 - 1, -(ph / 2) + pw / 2 - 1, 1, 1);
+			_img.graphics.drawEllipse((pw / 2) - pmhead * 3 - 1, -(ph / 2) + pw / 2 - 1, 1, 1);
+			
+			_img.graphics.lineStyle(2, 0xCFCFCF); // knife
+			_img.graphics.moveTo(pw / 2 - 2, 3);
+			_img.graphics.lineTo(pw / 2 - 1, 6);
+			_img.graphics.lineStyle();
+			
+			_img.graphics.beginFill(0x606060);// belts
+			_img.graphics.drawRect( -(pw / 2), -4, pw, 2);
+			_img.graphics.drawRect( -(pw / 2), 4, pw, 2);
+	/*		_img.graphics.beginFill(0);
 			_img.graphics.drawRect(- (pw / 2), 0 - (ph / 2), pw, ph);
 			_img.graphics.beginFill(0xFFFFFF);
-			_img.graphics.drawRect(- (pw / 2) + pmhead, 0 - (ph / 2) + pmhead, pw - pmhead * 2, pw - pmhead * 2);
+			_img.graphics.drawRect(- (pw / 2) + pmhead, 0 - (ph / 2) + pmhead, pw - pmhead * 2, pw - pmhead * 2);*/
 			window.addChild(_img);
 			_img.x = _posX;
 			_img.y = _posY;

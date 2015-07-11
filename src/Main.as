@@ -45,9 +45,17 @@ package
 		private function game(e:MouseEvent):void
 		{
 			this.removeChildren();
+			
+			var background:Shape = new Shape();
+			
+			background.graphics.beginFill(0xd68947, 1);
+			background.graphics.drawRect(0, 0, 512, 384);
+			background.graphics.endFill();
+			this.addChild(background);
+			
 			var border:Shape = new Shape();
 			
-			border.graphics.beginFill(0xFF0000, 0.5);
+			border.graphics.beginFill(0x404040, 1);
 			border.graphics.drawRect(GameEntity.BORDERSIZE, 0, stage.stageWidth - GameEntity.BORDERSIZE, GameEntity.BORDERSIZE);
 			border.graphics.drawRect(stage.stageWidth - GameEntity.BORDERSIZE, GameEntity.BORDERSIZE, GameEntity.BORDERSIZE, stage.stageHeight - GameEntity.BORDERSIZE);
 			border.graphics.drawRect(0, stage.stageHeight - GameEntity.BORDERSIZE, stage.stageWidth - GameEntity.BORDERSIZE, GameEntity.BORDERSIZE);
@@ -97,7 +105,7 @@ package
 			
 			if (_p1.img.rotation >= 8 || _p1.img.rotation <= -8)
 				_rs = -_rs;
-			for (var i:int = 1; i < this.numChildren; i++)
+			for (var i:int = 2; i < this.numChildren; i++)
 			{ //USELESS FOR NOW
 				this.setChildIndex(_crowdDisplay[i], i);
 			}
