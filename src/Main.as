@@ -11,6 +11,8 @@ package
 	import flash.events.MouseEvent;
 	import flash.geom.Matrix;
 	import flash.geom.Rectangle;
+	import flash.text.TextField;
+	import flash.text.TextFormat;
 	import flash.ui.Keyboard;
 	import Player;
 	
@@ -37,9 +39,11 @@ package
 		private function init(e:Event = null):void 
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
+			this.removeChildren();
 			title = new GameMenu(this);
 			
 			title.startButton.addEventListener(MouseEvent.CLICK, game);
+			title.configButton.addEventListener(MouseEvent.CLICK, config);
 		}
 		
 		private function game(e:MouseEvent):void
@@ -121,6 +125,38 @@ package
 			if (a.y > b.y) return 1;
 			if (a.y < b.y) return -1;
 			return 0;
+		}
+		
+		private function config(e:MouseEvent):void
+		{
+			this.removeChildren();
+			var border:Shape = new Shape();
+			
+			border.graphics.beginFill(0xd68947, 1);
+			border.graphics.drawRect(0, 0, 512, 384);
+			border.graphics.endFill();
+			this.addChild(border);
+			
+			var config = new TextField();
+			config.defaultTextFormat = new TextFormat('Verdana',44,0x890000, true);
+			config.text = "Configuration";
+			config.selectable = false;
+			config.autoSize = "left";
+			config.antiAliasType = flash.text.AntiAliasType.ADVANCED;
+			config.x = stage.width / 2 - config.textWidth / 2;
+			this.addChild(config);
+			
+			var back = new TextField();
+			back.defaultTextFormat = new TextFormat('Verdana',20,0xc52d2d, true);
+			back.text = "Back to menu";
+			back.selectable = false;
+			back.autoSize = "left";
+			back.antiAliasType = flash.text.AntiAliasType.ADVANCED;
+			back.x = stage.width / 2 - back.textWidth / 2;
+			back.y = stage.height - back.textHeight - 5;
+			this.addChild(back);
+			this.getChildAt(this.numChildren - 1).addEventListener(MouseEvent.CLICK, init);
+			this.getChildAt(this.numChildren - 1).addEventListener(MouseEvent.MOUSE_OVER, brighten);
 		}
 	}
 	

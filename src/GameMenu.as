@@ -57,7 +57,7 @@ package
 			base.getChildAt(base.numChildren - 1).addEventListener(MouseEvent.MOUSE_OVER, brighten);
 		}
 		
-		private function brighten (e:MouseEvent):void
+		public function brighten (e:MouseEvent):void
 		{
 			e.target.removeEventListener(MouseEvent.MOUSE_OVER, brighten);
 			var format:TextFormat = e.target.getTextFormat();
@@ -69,7 +69,7 @@ package
 			e.target.addEventListener(MouseEvent.MOUSE_OUT, darken);
 		}
 		
-		private function darken (e:MouseEvent):void
+		public function darken (e:MouseEvent):void
 		{
 			e.target.removeEventListener(MouseEvent.MOUSE_OUT, darken);
 			var format:TextFormat = e.target.getTextFormat();
