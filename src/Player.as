@@ -1,5 +1,6 @@
 package 
 {
+	import flash.display.Sprite;
 	import flash.ui.Keyboard;
 	import flash.events.KeyboardEvent;
 	/**
@@ -18,9 +19,9 @@ package
 		private var _upBut:uint;
 		private var _downBut:uint;
 		
-		public function Player(p1:Boolean=true) 
+		public function Player(window:Sprite, p1:Boolean=true) 
 		{
-			super();
+			super(window);
 			if (p1) {
 				_leftBut = Keyboard.LEFT;
 				_rightBut = Keyboard.RIGHT;
