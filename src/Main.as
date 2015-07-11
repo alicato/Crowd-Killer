@@ -50,7 +50,7 @@ package
 		
 		private function game():void
 		{
-			_crowdObject = new Vector.<DisplayObject>();
+			_crowdObject = new Vector.<Personnage>();
 			for (var i:int = 0; i < 30; ++i)
 			{
 				var tmp:Personnage = new Personnage(this);
