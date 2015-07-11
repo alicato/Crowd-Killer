@@ -26,6 +26,7 @@ package
 		private	var	_rs:Number = 1.5;
 		private var _crowdDisplay:Vector.<DisplayObject>;
 		private var _crowdObject:Vector.<Personnage>;
+		private var title:GameMenu;
 		
 		public function Main() 
 		{
@@ -36,6 +37,14 @@ package
 		private function init(e:Event = null):void 
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
+			title = new GameMenu(this);
+			
+			title.startButton.addEventListener(MouseEvent.CLICK, game);
+		}
+		
+		private function game(e:MouseEvent):void
+		{
+			this.removeChildren();
 			var border:Shape = new Shape();
 			
 			border.graphics.beginFill(0xFF0000, 0.5);
@@ -45,11 +54,7 @@ package
 			border.graphics.drawRect(0, 0, GameEntity.BORDERSIZE, stage.stageHeight - GameEntity.BORDERSIZE);
 			border.graphics.endFill();
 			addChild(border);
-			game();
-		}
-		
-		private function game():void
-		{
+			
 			_crowdObject = new Vector.<Personnage>();
 			for (var i:int = 0; i < 30; ++i)
 			{
