@@ -8,26 +8,41 @@ package
 	 * @author Jito
 	 */
 	public class Player extends Personnage
-	{		
+	{
+		public static var P1UP:uint = Keyboard.UP;
+		public static var P1DOWN:uint = Keyboard.DOWN;
+		public static var P1LEFT:uint = Keyboard.LEFT;
+		public static var P1RIGHT:uint = Keyboard.RIGHT;
+		public static var P1ATK:uint = Keyboard.SPACE;
+		
+		public static var P2UP:uint = Keyboard.Z;
+		public static var P2DOWN:uint = Keyboard.S;
+		public static var P2LEFT:uint = Keyboard.Q;
+		public static var P2RIGHT:uint = Keyboard.D;
+		public static var P2ATK:uint = Keyboard.SPACE;
+		
 		private var _leftBut:uint;
 		private var _rightBut:uint;
 		private var _upBut:uint;
 		private var _downBut:uint;
+		private var _atkBut:uint;
 		
 		public function Player(window:Sprite, p1:Boolean=true) 
 		{
 			super(window);
 			if (p1) { 	// PLAYER 1
-				_leftBut = Keyboard.LEFT;
-				_rightBut = Keyboard.RIGHT;
-				_downBut = Keyboard.DOWN;
-				_upBut = Keyboard.UP;
+				_leftBut = P1LEFT;
+				_rightBut = P1RIGHT;
+				_downBut = P1DOWN;
+				_upBut = P1UP;
+				_atkBut = P1ATK;
 			}
 			else { 		// PLAYER 2
-				_leftBut = Keyboard.Q;
-				_rightBut = Keyboard.D;
-				_downBut = Keyboard.S;
-				_upBut = Keyboard.Z;
+				_leftBut = P2LEFT;
+				_rightBut = P2RIGHT;
+				_downBut = P2DOWN;
+				_upBut = P2UP;
+				_atkBut = P2ATK;
 			}
 		}
 		
