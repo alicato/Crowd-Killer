@@ -8,6 +8,7 @@ package
 	import flash.display3D.textures.RectangleTexture;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
+	import flash.events.MouseEvent;
 	import flash.geom.Matrix;
 	import flash.geom.Rectangle;
 	import flash.ui.Keyboard;
@@ -22,8 +23,9 @@ package
 	{
 		private var _p1:Player;
 		private var _p2:Player;
-		public  var	rs:int = 2;
-		private var _crowd:Vector.<DisplayObject>;
+		private	var	_rs:int = 1;
+		private var _crowdDisplay:Vector.<DisplayObject>;
+		private var _crowdObject:Vector.<Personnage>;
 		
 		public function Main() 
 		{
@@ -34,7 +36,6 @@ package
 		private function init(e:Event = null):void 
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
-			//stage.color = 0x808080;
 			var border:Shape = new Shape();
 			
 			border.graphics.beginFill(0xFF0000, 0.5);
@@ -49,17 +50,21 @@ package
 		
 		private function game():void
 		{
+			_crowdObject = new Vector.<Personnage>();
 			for (var i:int = 0; i < 30; ++i)
 			{
-				var test:Personnage = new Personnage(this);
+				var tmp:Personnage = new Personnage(this);
+				_crowdObject.push(tmp);
 			}
 			_p1 = new Player(this);
 			_p2 = new Player(this, false);
+			_crowdObject.push(_p1);
+			_crowdObject.push(_p2);
 			
-			_crowd = new Vector.<DisplayObject>();
+			_crowdDisplay = new Vector.<DisplayObject>();
 			for (i = 0; i < this.numChildren; i++)
 				if (this.getChildAt(i) is DisplayObject)
-					_crowd.push(this.getChildAt(i));
+					_crowdDisplay.push(this.getChildAt(i));
 				
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyboardDown);
 			stage.addEventListener(KeyboardEvent.KEY_UP,onKeyboardUp);
@@ -85,16 +90,14 @@ package
 		{
 			_p1.move();
 			_p2.move();
-			_crowd.sort(sorty);
+			_crowdDisplay.sort(sorty);
 			
-			if (_p1.img.rotation >= 9 || _p1.img.rotation <= -9)
-				rs = -rs;
-			
-			_p1.img.rotation += rs;
-			
-			for (var i:int = 0; i < this.numChildren; i++ )
+			if (_p1.img.rotation >= 8 || _p1.img.rotation <= -8)
+					_rs = -_rs;
+			for (var i:int = 1; i < this.numChildren; i++ )
 			{
-				this.setChildIndex(_crowd[i], i);
+				this.setChildIndex(_crowdDisplay[i], i);
+				_crowdDisplay[i].rotation += _rs;
 			}
 		}
 		
