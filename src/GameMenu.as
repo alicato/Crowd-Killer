@@ -12,11 +12,10 @@ package
 	 */
 	public class GameMenu extends Sprite
 	{
-		static private const COLORMODIF:Number = 0.8;
 		public var startButton:TextField;
 		public var configButton:TextField;
 		
-		public function GameMenu(base:Sprite) 
+		public function GameMenu(base:Main) 
 		{
 			var border:Shape = new Shape();
 			
@@ -43,7 +42,7 @@ package
 			startButton.x = base.width / 2 - startButton.textWidth / 2;
 			startButton.y = base.height / 2 - startButton.textHeight - 5;
 			base.addChild(startButton);
-			base.getChildAt(base.numChildren - 1).addEventListener(MouseEvent.MOUSE_OVER, brighten);
+			base.getChildAt(base.numChildren - 1).addEventListener(MouseEvent.MOUSE_OVER, base.brighten);
 			
 			configButton = new TextField();
 			configButton.defaultTextFormat = new TextFormat('Verdana',30,0xc52d2d, true);
@@ -54,31 +53,7 @@ package
 			configButton.x = base.width / 2 - configButton.textWidth / 2;
 			configButton.y = base.height / 2 + 5;
 			base.addChild(configButton);
-			base.getChildAt(base.numChildren - 1).addEventListener(MouseEvent.MOUSE_OVER, brighten);
-		}
-		
-		public function brighten (e:MouseEvent):void
-		{
-			e.target.removeEventListener(MouseEvent.MOUSE_OVER, brighten);
-			var format:TextFormat = e.target.getTextFormat();
-			var red:uint = ((int(format.color) & 0xFF0000) >> 16) / COLORMODIF;
-			var green:uint = ((int(format.color) & 0xFF00) >> 8) / COLORMODIF;
-			var blue:uint = (int(format.color) & 0xFF) / COLORMODIF;
-			format.color = (red << 16) + (green << 8) + blue;
-			e.target.setTextFormat(format);
-			e.target.addEventListener(MouseEvent.MOUSE_OUT, darken);
-		}
-		
-		public function darken (e:MouseEvent):void
-		{
-			e.target.removeEventListener(MouseEvent.MOUSE_OUT, darken);
-			var format:TextFormat = e.target.getTextFormat();
-			var red:uint = ((int(format.color) & 0xFF0000) >> 16) * COLORMODIF;
-			var green:uint = ((int(format.color) & 0xFF00) >> 8) * COLORMODIF;
-			var blue:uint = (int(format.color) & 0xFF) * COLORMODIF;
-			format.color = (red << 16) + (green << 8) + blue;
-			e.target.setTextFormat(format);
-			e.target.addEventListener(MouseEvent.MOUSE_OVER, brighten);
+			base.getChildAt(base.numChildren - 1).addEventListener(MouseEvent.MOUSE_OVER, base.brighten);
 		}
 	}
 	

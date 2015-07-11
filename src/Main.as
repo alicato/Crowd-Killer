@@ -23,6 +23,7 @@ package
 	[SWF(width="512", height="384", frameRate='60')]
 	public class Main extends Sprite 
 	{
+		static private const COLORMODIF:Number = 0.8;
 		private var _p1:Player;
 		private var _p2:Player;
 		private	var	_rs:Number = 1.5;
@@ -137,7 +138,7 @@ package
 			border.graphics.endFill();
 			this.addChild(border);
 			
-			var config = new TextField();
+			var config:TextField = new TextField();
 			config.defaultTextFormat = new TextFormat('Verdana',44,0x890000, true);
 			config.text = "Configuration";
 			config.selectable = false;
@@ -146,7 +147,7 @@ package
 			config.x = stage.width / 2 - config.textWidth / 2;
 			this.addChild(config);
 			
-			var back = new TextField();
+			var back:TextField = new TextField();
 			back.defaultTextFormat = new TextFormat('Verdana',20,0xc52d2d, true);
 			back.text = "Back to menu";
 			back.selectable = false;
@@ -157,6 +158,30 @@ package
 			this.addChild(back);
 			this.getChildAt(this.numChildren - 1).addEventListener(MouseEvent.CLICK, init);
 			this.getChildAt(this.numChildren - 1).addEventListener(MouseEvent.MOUSE_OVER, brighten);
+		}
+		
+		public function brighten (e:MouseEvent):void
+		{
+			e.target.removeEventListener(MouseEvent.MOUSE_OVER, brighten);
+			var format:TextFormat = e.target.getTextFormat();
+			var red:uint = ((int(format.color) & 0xFF0000) >> 16) / COLORMODIF;
+			var green:uint = ((int(format.color) & 0xFF00) >> 8) / COLORMODIF;
+			var blue:uint = (int(format.color) & 0xFF) / COLORMODIF;
+			format.color = (red << 16) + (green << 8) + blue;
+			e.target.setTextFormat(format);
+			e.target.addEventListener(MouseEvent.MOUSE_OUT, darken);
+		}
+		
+		public function darken (e:MouseEvent):void
+		{
+			e.target.removeEventListener(MouseEvent.MOUSE_OUT, darken);
+			var format:TextFormat = e.target.getTextFormat();
+			var red:uint = ((int(format.color) & 0xFF0000) >> 16) * COLORMODIF;
+			var green:uint = ((int(format.color) & 0xFF00) >> 8) * COLORMODIF;
+			var blue:uint = (int(format.color) & 0xFF) * COLORMODIF;
+			format.color = (red << 16) + (green << 8) + blue;
+			e.target.setTextFormat(format);
+			e.target.addEventListener(MouseEvent.MOUSE_OVER, brighten);
 		}
 	}
 	
