@@ -14,6 +14,11 @@ package
 		protected var			_alive:Boolean;
 		protected var			_img:Sprite;
 		
+		protected var			_left:Boolean;
+		protected var			_right:Boolean;
+		protected var			_up:Boolean;
+		protected var			_down:Boolean;
+		
 		public function Personnage(window:Sprite)
 		{
 			_img = new Sprite();
@@ -42,6 +47,79 @@ package
 		}
 		
 		/**************/
+		
+		public function	isMoving():Boolean
+		{
+			if (_left || _up || _down || _right)
+				return true;
+			return false;
+		}
+		
+		public function resetMoves():void
+		{
+			_up = false;
+			_left = false;
+			_down = false;
+			_right = false;
+		}
+		
+		public function countMoves():int
+		{
+			var count:int = 0;
+			
+			if ((_up && !_down) || (_down && !_up)) ++count;
+			if ((_right && !_left) || (_left && !_right)) ++count;
+			return (count);
+		}
+		
+		public function move():void
+		{
+			var count:int = countMoves();
+			if (count == 0)
+				return ;
+			
+			if (_up) _img.y -= 1 / count;
+			if (_down) _img.y += 1 / count;
+			if (_right) _img.x += 1 / count;
+			if (_left) _img.x -= 1 / count;
+			
+			if (_img.x < GameEntity.BORDERSIZE + pw / 2)
+			{
+				_img.x = GameEntity.BORDERSIZE + pw / 2;
+				if (this is PNJ)
+				{
+					_left = false;
+					_right = true;
+				}
+			}
+			else if (_img.x > GameEntity.WINDOWWIDTH - pw / 2 - GameEntity.BORDERSIZE)
+			{
+				_img.x = GameEntity.WINDOWWIDTH - pw / 2 - GameEntity.BORDERSIZE;
+				if (this is PNJ)
+				{
+					_left = true;
+					_right = false;
+				}
+			}
+			if (_img.y < GameEntity.BORDERSIZE + ph / 2)
+			{
+				_img.y = GameEntity.BORDERSIZE + ph / 2;
+				if (this is PNJ)
+				{
+					_up = false;
+					_down = true;
+				}
+			}
+			else if (_img.y > GameEntity.WINDOWHEIGHT - ph / 2 - GameEntity.BORDERSIZE)
+			{
+				_img.y = GameEntity.WINDOWHEIGHT - ph / 2 - GameEntity.BORDERSIZE;
+				if (this is PNJ)
+				{
+					_up = true;
+					_down = false;
+				}
+			}
+		}
 		
 	}
 
