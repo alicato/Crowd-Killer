@@ -8,12 +8,7 @@ package
 	 * @author Jito
 	 */
 	public class Player extends Personnage
-	{
-		private var _left:Boolean;
-		private var _right:Boolean;
-		private var _up:Boolean;
-		private var _down:Boolean;
-		
+	{		
 		private var _leftBut:uint;
 		private var _rightBut:uint;
 		private var _upBut:uint;
@@ -22,25 +17,18 @@ package
 		public function Player(window:Sprite, p1:Boolean=true) 
 		{
 			super(window);
-			if (p1) {
+			if (p1) { 	// PLAYER 1
 				_leftBut = Keyboard.LEFT;
 				_rightBut = Keyboard.RIGHT;
 				_downBut = Keyboard.DOWN;
 				_upBut = Keyboard.UP;
-			} else {
+			}
+			else { 		// PLAYER 2
 				_leftBut = Keyboard.Q;
 				_rightBut = Keyboard.D;
 				_downBut = Keyboard.S;
 				_upBut = Keyboard.Z;
 			}
-		}
-		
-		public function move():void
-		{
-			if (_up) _img.y -= 1;
-			if (_down) _img.y += 1;
-			if (_right) _img.x += 1;
-			if (_left) _img.x -= 1;
 		}
 		
 		public function updateMoveDown(event:KeyboardEvent):void

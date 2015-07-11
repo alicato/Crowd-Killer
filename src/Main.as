@@ -23,7 +23,7 @@ package
 	{
 		private var _p1:Player;
 		private var _p2:Player;
-		private	var	_rs:int = 1;
+		private	var	_rs:Number = 1.5;
 		private var _crowdDisplay:Vector.<DisplayObject>;
 		private var _crowdObject:Vector.<Personnage>;
 		
@@ -39,10 +39,10 @@ package
 			var border:Shape = new Shape();
 			
 			border.graphics.beginFill(0xFF0000, 0.5);
-			border.graphics.drawRect(2, 0, stage.stageWidth-2, 2);
-			border.graphics.drawRect(stage.stageWidth-2, 2, 2, stage.stageHeight-2);
-			border.graphics.drawRect(0, stage.stageHeight-2, stage.stageWidth-2, 2);
-			border.graphics.drawRect(0, 0, 2, stage.stageHeight-2);
+			border.graphics.drawRect(GameEntity.BORDERSIZE, 0, stage.stageWidth - GameEntity.BORDERSIZE, GameEntity.BORDERSIZE);
+			border.graphics.drawRect(stage.stageWidth - GameEntity.BORDERSIZE, GameEntity.BORDERSIZE, GameEntity.BORDERSIZE, stage.stageHeight - GameEntity.BORDERSIZE);
+			border.graphics.drawRect(0, stage.stageHeight - GameEntity.BORDERSIZE, stage.stageWidth - GameEntity.BORDERSIZE, GameEntity.BORDERSIZE);
+			border.graphics.drawRect(0, 0, GameEntity.BORDERSIZE, stage.stageHeight - GameEntity.BORDERSIZE);
 			border.graphics.endFill();
 			addChild(border);
 			game();
@@ -53,7 +53,7 @@ package
 			_crowdObject = new Vector.<Personnage>();
 			for (var i:int = 0; i < 30; ++i)
 			{
-				var tmp:Personnage = new Personnage(this);
+				var tmp:PNJ = new PNJ(this);
 				_crowdObject.push(tmp);
 			}
 			_p1 = new Player(this);
@@ -88,16 +88,18 @@ package
 		
 		private function evtStageEnterFrame(ev:Event):void
 		{
-			_p1.move();
-			_p2.move();
 			_crowdDisplay.sort(sorty);
 			
 			if (_p1.img.rotation >= 8 || _p1.img.rotation <= -8)
-					_rs = -_rs;
-			for (var i:int = 1; i < this.numChildren; i++ )
-			{
+				_rs = -_rs;
+			for (var i:int = 1; i < this.numChildren; i++)
+			{ //USELESS FOR NOW
 				this.setChildIndex(_crowdDisplay[i], i);
-				_crowdDisplay[i].rotation += _rs;
+			}
+			for (var n:int = 0; n < _crowdObject.length; ++n)
+			{
+				_crowdObject[n].move();
+				_crowdObject[n].img.rotation += _rs;
 			}
 		}
 		
