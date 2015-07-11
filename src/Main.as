@@ -5,9 +5,11 @@ package
 	import flash.display.Sprite;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Shape;
+	import flash.display3D.textures.RectangleTexture;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.geom.Matrix;
+	import flash.geom.Rectangle;
 	import flash.ui.Keyboard;
 	import Player;
 	
@@ -20,6 +22,7 @@ package
 	{
 		private var _p1:Player;
 		private var _p2:Player;
+		public  var	rs:int = 2;
 		private var _crowd:Vector.<DisplayObject>;
 		
 		public function Main() 
@@ -83,6 +86,12 @@ package
 			_p1.move();
 			_p2.move();
 			_crowd.sort(sorty);
+			
+			if (_p1.img.rotation >= 9 || _p1.img.rotation <= -9)
+				rs = -rs;
+			
+			_p1.img.rotation += rs;
+			
 			for (var i:int = 0; i < this.numChildren; i++ )
 			{
 				this.setChildIndex(_crowd[i], i);
