@@ -211,6 +211,13 @@ package
 				this.addChild(pright);
 				pright.addEventListener(MouseEvent.CLICK, configButton);
 				
+				var patk:CustomText = new CustomText("Attack", 'ImpactFont', 30 , 0xc52d2d, true);
+				patk.x = stage.width / 2 - patk.textWidth / 2;
+				patk.y = pright.y + pright.textHeight + 10;
+				patk.name = player + "ATK";
+				this.addChild(patk);
+				patk.addEventListener(MouseEvent.CLICK, configButton);
+				
 				var change:CustomText = new CustomText("Default", 'ImpactFont', 30 , 0xc52d2d, true, false);
 				change.x = stage.width / 2 - change.textWidth / 2;
 				change.y = stage.height / 2 - change.textHeight / 2;
@@ -232,6 +239,7 @@ package
 			this.getChildByName(str + "DOWN").visible = false;
 			this.getChildByName(str + "LEFT").visible = false;
 			this.getChildByName(str + "RIGHT").visible = false;
+			this.getChildByName(str + "ATK").visible = false;
 			this.getChildByName("Back").visible = false;
 			var change:CustomText = CustomText(this.getChildByName("Change"));
 			change.visible = true;
@@ -250,6 +258,7 @@ package
 			this.getChildByName(str + "DOWN").visible = true;
 			this.getChildByName(str + "LEFT").visible = true;
 			this.getChildByName(str + "RIGHT").visible = true;
+			this.getChildByName(str + "ATK").visible = true;
 			this.getChildByName("Back").visible = true;
 			Player[actualButton] = e.keyCode;
 		}

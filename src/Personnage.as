@@ -185,6 +185,14 @@ package
 			}
 		}
 		
+		public function die():void
+		{
+			this._alive = false;
+			if (Math.random() > 0.5)
+				this._img.rotation = 90;
+			else
+				this._img.rotation = -90;
+		}
 	}
 
 }

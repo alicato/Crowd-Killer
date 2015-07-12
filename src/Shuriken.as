@@ -12,6 +12,7 @@ package
 		public static const	SPEED:int = 2;
 		public static const	WIDTH:int = 2;
 		public static const	BASEMR:int = 15;
+		static private const ROTATESPEED:int = 4;
 		
 		private var			_dir:int;
 		private var			_mr:int;
@@ -24,8 +25,21 @@ package
 			_owner = owner;
 			_mr = Shuriken.BASEMR;
 			
-			graphics.beginFill(0x000000);
-			graphics.drawCircle(0, 0, Shuriken.WIDTH);
+			graphics.beginFill(0x404040);
+			var step : Number, halfStep : Number, start : Number, n : Number, dx : Number, dy : Number;
+			step = (Math.PI * 2) / 4;
+			halfStep = step / 2;
+			start = (45 / 180) * Math.PI;
+			graphics.moveTo((Math.cos( start ) * 2), -(Math.sin( start ) * 2));
+			for (n = 1; n <= 4; ++n) {
+				dx = Math.cos( start + (step * n) - halfStep ) * 4;
+				dy = -Math.sin( start + (step * n) - halfStep ) * 4;
+				graphics.lineTo( dx, dy );
+				dx = Math.cos( start + (step * n) ) * 2;
+				dy = -Math.sin( start + (step * n) ) * 2;
+				graphics.lineTo( dx, dy );
+			}
+			graphics.drawCircle(0, 0, 1);
 			
 			switch (owner.lastDir)
 			{
@@ -46,9 +60,11 @@ package
 			{
 				case (Shuriken.RIGHTDIR):
 					this.x += Shuriken.SPEED;
+					this.rotation += ROTATESPEED;
 					break ;
 				case (Shuriken.LEFTDIR):
 					this.x -= Shuriken.SPEED;
+					this.rotation -= ROTATESPEED;
 					break ;
 			}
 			--_mr;
