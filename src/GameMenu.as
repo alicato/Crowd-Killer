@@ -12,8 +12,8 @@ package
 	 */
 	public class GameMenu extends Sprite
 	{
-		public var startButton:TextField;
-		public var configButton:TextField;
+		public var startButton:CustomText;
+		public var configButton:CustomText;
 		
 		public function GameMenu(base:Main) 
 		{
@@ -24,38 +24,19 @@ package
 			border.graphics.endFill();
 			base.addChild(border);
 			
-			var title:TextField = new TextField();
-			title.defaultTextFormat = new TextFormat('Papyrus',44,0x890000, true);
-			title.htmlText = "Crowd Killer";
-			title.selectable = false;
-			title.autoSize = "left";
-			title.antiAliasType = flash.text.AntiAliasType.ADVANCED;
+			var title:CustomText = new CustomText("Crowd Killer", 'Papyrus',44,0x890000, true, false);
 			title.x = base.width / 2 - title.textWidth / 2;
 			base.addChild(title);
 			
-			startButton = new TextField();
-			startButton.defaultTextFormat = new TextFormat('ImpactFont',30,0xc52d2d);
-			startButton.text = "START";
-			startButton.selectable = false;
-			startButton.autoSize = "left";
-			startButton.embedFonts = true;
-			startButton.antiAliasType = flash.text.AntiAliasType.ADVANCED;
+			startButton = new CustomText("START", 'ImpactFont', 30, 0xc52d2d);
 			startButton.x = base.width / 2 - startButton.textWidth / 2;
 			startButton.y = base.height / 2 - startButton.textHeight - 5;
 			base.addChild(startButton);
-			base.getChildAt(base.numChildren - 1).addEventListener(MouseEvent.MOUSE_OVER, base.brighten);
 			
-			configButton = new TextField();
-			configButton.defaultTextFormat = new TextFormat('ImpactFont',30,0xc52d2d);
-			configButton.text = "CONFIG";
-			configButton.selectable = false;
-			configButton.autoSize = "left";
-			configButton.embedFonts = true;
-			configButton.antiAliasType = flash.text.AntiAliasType.ADVANCED;
+			configButton = new CustomText("CONFIG", 'ImpactFont',30,0xc52d2d);
 			configButton.x = base.width / 2 - configButton.textWidth / 2;
 			configButton.y = base.height / 2 + 5;
 			base.addChild(configButton);
-			base.getChildAt(base.numChildren - 1).addEventListener(MouseEvent.MOUSE_OVER, base.brighten);
 		}
 	}
 	
