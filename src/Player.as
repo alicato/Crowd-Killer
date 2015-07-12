@@ -13,13 +13,13 @@ package
 		public static var P1DOWN:uint = Keyboard.DOWN;
 		public static var P1LEFT:uint = Keyboard.LEFT;
 		public static var P1RIGHT:uint = Keyboard.RIGHT;
-		public static var P1ATK:uint = Keyboard.SPACE;
+		public static var P1ATK:uint = Keyboard.ENTER;
 		
 		public static var P2UP:uint = Keyboard.Z;
 		public static var P2DOWN:uint = Keyboard.S;
 		public static var P2LEFT:uint = Keyboard.Q;
 		public static var P2RIGHT:uint = Keyboard.D;
-		public static var P2ATK:uint = Keyboard.NUMBER_0;
+		public static var P2ATK:uint = Keyboard.SPACE;
 		
 		private var _leftBut:uint;
 		private var _rightBut:uint;
@@ -48,26 +48,45 @@ package
 		
 		public function updateMoveDown(event:KeyboardEvent):void
 		{
-			if (event.keyCode == this._rightBut)
-				this.right = true;
-			if (event.keyCode == this._leftBut)
-				this.left = true;
-			if (event.keyCode == this.downBut)
-				this.down = true;
-			if (event.keyCode == this.upBut)
-				this.up = true;
+			switch (event.keyCode)
+			{
+				case (rightBut):
+					right = true;
+					lastDir = Shuriken.RIGHTDIR;
+					break;
+				case (leftBut):
+					left = true;
+					lastDir = Shuriken.LEFTDIR;
+					break;
+				case (downBut):
+					down = true;
+					break;
+				case (upBut):
+					up = true;
+					break;
+				case (atkBut):
+					attack();
+					break;
+			}
 		}
 		
 		public function updateMoveUp(event:KeyboardEvent):void
 		{
-			if (event.keyCode == this.rightBut)
-				this.right = false;
-			if (event.keyCode == this.leftBut)
-				this.left = false;
-			if (event.keyCode == this.downBut)
-				this.down = false;
-			if (event.keyCode == this.upBut)
-				this.up = false;
+			switch (event.keyCode)
+			{
+				case (rightBut):
+					right = false;
+					break;
+				case (leftBut):
+					left = false;
+					break;
+				case (downBut):
+					down = false;
+					break;
+				case (upBut):
+					up = false;
+					break;
+			}
 		}
 		
 		public function set left(value:Boolean):void 
@@ -128,6 +147,16 @@ package
 		public function set downBut(value:uint):void 
 		{
 			_downBut = value;
+		}
+		
+		public function get atkBut():uint 
+		{
+			return _atkBut;
+		}
+		
+		public function set atkBut(value:uint):void 
+		{
+			_atkBut = value;
 		}
 		
 	}

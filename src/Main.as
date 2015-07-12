@@ -5,7 +5,6 @@ package
 	import flash.display.Sprite;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Shape;
-	import flash.display3D.textures.RectangleTexture;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
@@ -98,8 +97,9 @@ package
 					init();
 					break;
 				default:
-				_p1.updateMoveDown(event);
-				_p2.updateMoveDown(event);
+					_p1.updateMoveDown(event);
+					_p2.updateMoveDown(event);
+					break;
 			}
 		}
 		
@@ -115,13 +115,14 @@ package
 			
 			if (_p1.img.rotation >= 8 || _p1.img.rotation <= -8)
 				_rs = -_rs;
-			for (var i:int = 2; i < this.numChildren; i++)
+			for (var i:int = 2; i < _crowdDisplay.length; i++)
 			{ //USELESS FOR NOW
 				this.setChildIndex(_crowdDisplay[i], i);
 			}
 			for (var n:int = 0; n < _crowdObject.length; ++n)
 			{
 				_crowdObject[n].move();
+				_crowdObject[n].moveShuriken();
 				_crowdObject[n].img.rotation += _rs;
 			}
 		}
