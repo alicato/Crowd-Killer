@@ -19,7 +19,7 @@ package
 		public static var P2DOWN:uint = Keyboard.S;
 		public static var P2LEFT:uint = Keyboard.Q;
 		public static var P2RIGHT:uint = Keyboard.D;
-		public static var P2ATK:uint = Keyboard.SPACE;
+		public static var P2ATK:uint = Keyboard.NUMBER_0;
 		
 		private var _leftBut:uint;
 		private var _rightBut:uint;

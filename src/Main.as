@@ -11,6 +11,7 @@ package
 	import flash.events.MouseEvent;
 	import flash.geom.Matrix;
 	import flash.geom.Rectangle;
+	import flash.text.Font;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	import flash.ui.Keyboard;
@@ -30,6 +31,8 @@ package
 		private var _crowdDisplay:Vector.<DisplayObject>;
 		private var _crowdObject:Vector.<Personnage>;
 		private var title:GameMenu;
+		[Embed(source="/../bin/Impact.ttf", fontName = "ImpactFont", mimeType = "application/x-font", advancedAntiAliasing="true", embedAsCFF="false")]
+		private var impactFont:Class;
 		
 		public function Main() 
 		{
@@ -51,20 +54,20 @@ package
 		{
 			this.removeChildren();
 			
-			var background:Shape = new Shape();
+			var p2configground:Shape = new Shape();
 			
-			background.graphics.beginFill(0xd68947, 1);
-			background.graphics.drawRect(0, 0, 512, 384);
-			background.graphics.endFill();
-			this.addChild(background);
+			p2configground.graphics.beginFill(0xd68947, 1);
+			p2configground.graphics.drawRect(0, 0, 512, 384);
+			p2configground.graphics.endFill();
+			this.addChild(p2configground);
 			
 			var border:Shape = new Shape();
 			
 			border.graphics.beginFill(0x404040, 1);
-			border.graphics.drawRect(GameEntity.BORDERSIZE, 0, stage.stageWidth - GameEntity.BORDERSIZE, GameEntity.BORDERSIZE);
-			border.graphics.drawRect(stage.stageWidth - GameEntity.BORDERSIZE, GameEntity.BORDERSIZE, GameEntity.BORDERSIZE, stage.stageHeight - GameEntity.BORDERSIZE);
-			border.graphics.drawRect(0, stage.stageHeight - GameEntity.BORDERSIZE, stage.stageWidth - GameEntity.BORDERSIZE, GameEntity.BORDERSIZE);
-			border.graphics.drawRect(0, 0, GameEntity.BORDERSIZE, stage.stageHeight - GameEntity.BORDERSIZE);
+			border.graphics.drawRect(GameEntity.BORDERSIZE, 0, GameEntity.WINDOWWIDTH - GameEntity.BORDERSIZE, GameEntity.BORDERSIZE);
+			border.graphics.drawRect(GameEntity.WINDOWWIDTH - GameEntity.BORDERSIZE, GameEntity.BORDERSIZE, GameEntity.BORDERSIZE, GameEntity.WINDOWHEIGHT - GameEntity.BORDERSIZE);
+			border.graphics.drawRect(0, GameEntity.WINDOWHEIGHT - GameEntity.BORDERSIZE, GameEntity.WINDOWWIDTH - GameEntity.BORDERSIZE, GameEntity.BORDERSIZE);
+			border.graphics.drawRect(0, 0, GameEntity.BORDERSIZE, GameEntity.WINDOWHEIGHT - GameEntity.BORDERSIZE);
 			border.graphics.endFill();
 			addChild(border);
 			
@@ -139,16 +142,17 @@ package
 			this.addChild(border);
 			
 			var config:TextField = new TextField();
-			config.defaultTextFormat = new TextFormat('Verdana',44,0x890000, true);
+			config.defaultTextFormat = new TextFormat("ImpactFont",44,0x890000, true);
 			config.text = "Configuration";
 			config.selectable = false;
 			config.autoSize = "left";
+			config.embedFonts = true;
 			config.antiAliasType = flash.text.AntiAliasType.ADVANCED;
 			config.x = stage.width / 2 - config.textWidth / 2;
 			this.addChild(config);
 			
 			var back:TextField = new TextField();
-			back.defaultTextFormat = new TextFormat('Verdana',20,0xc52d2d, true);
+			back.defaultTextFormat = new TextFormat('Verdana', 20, 0x202020, true);
 			back.text = "Back to menu";
 			back.selectable = false;
 			back.autoSize = "left";
@@ -158,6 +162,54 @@ package
 			this.addChild(back);
 			this.getChildAt(this.numChildren - 1).addEventListener(MouseEvent.CLICK, init);
 			this.getChildAt(this.numChildren - 1).addEventListener(MouseEvent.MOUSE_OVER, brighten);
+			
+			var p1config:TextField = new TextField();
+			p1config.defaultTextFormat = new TextFormat('ImpactFont',30,0xc52d2d, true);
+			p1config.text = "Player 1";
+			p1config.selectable = false;
+			p1config.autoSize = "left";
+			p1config.embedFonts = true;
+			p1config.antiAliasType = flash.text.AntiAliasType.ADVANCED;
+			p1config.x = stage.width / 2 - p1config.textWidth / 2;
+			p1config.y = stage.height / 2 - p1config.textHeight - 50;
+			this.addChild(p1config);
+			//this.getChildAt(this.numChildren - 1).addEventListener(MouseEvent.CLICK, configmenu);
+			this.getChildAt(this.numChildren - 1).addEventListener(MouseEvent.MOUSE_OVER, brighten);
+			
+			var p2config:TextField = new TextField();
+			p2config.defaultTextFormat = new TextFormat('ImpactFont',30,0xc52d2d, true);
+			p2config.text = "Player 2";
+			p2config.selectable = false;
+			p2config.autoSize = "left";
+			p2config.embedFonts = true;
+			p2config.antiAliasType = flash.text.AntiAliasType.ADVANCED;
+			p2config.x = stage.width / 2 - p2config.textWidth / 2;
+			p2config.y = p1config.y + p1config.textHeight + 15;
+			this.addChild(p2config);
+			//this.getChildAt(this.numChildren - 1).addEventListener(MouseEvent.CLICK, configmenu);
+			this.getChildAt(this.numChildren - 1).addEventListener(MouseEvent.MOUSE_OVER, brighten);
+			
+			var gameOpt:TextField = new TextField();
+			gameOpt.defaultTextFormat = new TextFormat('ImpactFont',30,0xc52d2d, true);
+			gameOpt.text = "Game Options";
+			gameOpt.selectable = false;
+			gameOpt.autoSize = "left";
+			gameOpt.embedFonts = true;
+			gameOpt.antiAliasType = flash.text.AntiAliasType.ADVANCED;
+			gameOpt.x = stage.width / 2 - gameOpt.textWidth / 2;
+			gameOpt.y = p2config.y + p2config.textHeight + 15;
+			this.addChild(gameOpt);
+			//this.getChildAt(this.numChildren - 1).addEventListener(MouseEvent.CLICK, configmenu);
+			this.getChildAt(this.numChildren - 1).addEventListener(MouseEvent.MOUSE_OVER, brighten);
+			
+			/*var fonts:Array = Font.enumerateFonts(true);
+			for each(var font:Font in fonts)
+				trace(font.fontName + ":" + font.fontType);*/
+		}
+		
+		private function configmenu(e:MouseEvent):void
+		{
+			
 		}
 		
 		public function brighten (e:MouseEvent):void
