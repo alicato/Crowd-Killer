@@ -21,6 +21,8 @@ package
 	[SWF(width="512", height="384", frameRate='60')]
 	public class Main extends Sprite 
 	{
+		public static const	RANGLEMAX:uint = 8;
+		
 		private var _p1:Player;
 		private var _p2:Player;
 		private	var	_rs:Number = 1.5;
@@ -113,17 +115,61 @@ package
 		{
 			_crowdDisplay.sort(sorty);
 			
-			if (_p1.img.rotation >= 8 || _p1.img.rotation <= -8)
-				_rs = -_rs;
 			for (var i:int = 2; i < _crowdDisplay.length; i++)
 			{ //USELESS FOR NOW
 				this.setChildIndex(_crowdDisplay[i], i);
 			}
+			
+			var currentShurikens:Vector.<Shuriken> = new Vector.<Shuriken>();
+			var invert:Boolean = false;
+			
 			for (var n:int = 0; n < _crowdObject.length; ++n)
 			{
-				_crowdObject[n].move();
-				_crowdObject[n].moveShuriken();
-				_crowdObject[n].img.rotation += _rs;
+				if (!invert && _crowdObject[n].alive && (_crowdObject[n].img.rotation >= Main.RANGLEMAX || _crowdObject[n].img.rotation <= -Main.RANGLEMAX))
+				{
+					invert = true;
+					_rs = -_rs;
+				}
+				if (_crowdObject[n].alive)
+				{
+					_crowdObject[n].move();						// Déplacement des personnages
+					if (_crowdObject[n].moveShuriken())			// Déplacement des éventuels shurikens
+						currentShurikens.push(_crowdObject[n].shuriken);
+					_crowdObject[n].img.rotation += _rs;		// Légère animation des personnages
+				}
+			}
+			
+			for each (var shuriken:Shuriken in currentShurikens)
+			{
+				var hitPers:Vector.<Personnage> = new Vector.<Personnage>();
+				for each (var pers:Personnage in _crowdObject)
+				{
+					if (shuriken.owner == pers || !pers.alive)
+						continue;
+					if (shuriken.hitTestObject(pers.img))
+						hitPers.push(pers);
+				}
+				
+				var toKill:Personnage;
+				for each (var canDie:Personnage in hitPers)
+				{
+					switch (shuriken.dir)
+					{
+						case (Shuriken.LEFTDIR):
+							if (!toKill || canDie.img.x > toKill.img.x)
+								toKill = canDie;
+							break;
+						case (Shuriken.RIGHTDIR):
+							if (!toKill || canDie.img.x < toKill.img.x)
+								toKill = canDie;
+							break;
+					}
+				}
+				if (toKill)
+				{
+					shuriken.owner.deleteShuriken();
+					toKill.die();
+				}
 			}
 		}
 		
