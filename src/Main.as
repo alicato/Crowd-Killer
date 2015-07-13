@@ -38,14 +38,19 @@ package
 		
 		public function init(e:Event = null):void 
 		{
-			stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyboardDown);
-			stage.removeEventListener(KeyboardEvent.KEY_UP,onKeyboardUp);
-			stage.removeEventListener(Event.ENTER_FRAME, evtStageEnterFrame);
+			removeListeners();
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			this.removeChildren();
 			title = new GameMenu(this);
 			
 			title.startButton.addEventListener(MouseEvent.CLICK, game);
+		}
+		
+		public function removeListeners():void
+		{
+			stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyboardDown);
+			stage.removeEventListener(KeyboardEvent.KEY_UP,onKeyboardUp);
+			stage.removeEventListener(Event.ENTER_FRAME, evtStageEnterFrame);
 		}
 		
 		private function game(e:MouseEvent):void
@@ -168,12 +173,12 @@ package
 					shuriken.owner.deleteShuriken();
 					toKill.die();
 					if (toKill is Player)
-						init();
+						title.endgame(toKill == _p1);
 				}
 			}
 		}
 		
-		private function sorty(a:DisplayObject, b:DisplayObject):int
+		public function sorty(a:DisplayObject, b:DisplayObject):int
 		{
 			var ay:int = (a.name == "Alive") ? a.y : a.y - Personnage.PHEIGHT;
 			var by:int = (b.name == "Alive") ? b.y : b.y - Personnage.PHEIGHT;

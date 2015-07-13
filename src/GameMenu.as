@@ -2,10 +2,12 @@ package
 {
 	import flash.display.Sprite;
 	import flash.display.Shape;
+	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	import flash.events.KeyboardEvent;
+	import flash.display.DisplayObject;
 	
 	/**
 	 * ...
@@ -16,6 +18,9 @@ package
 		public var startButton:CustomText;
 		private static var main:Main;
 		private var actualButton:String;
+		private	var	_rs:Number = 1.5;
+		private var _crowdDisplay:Vector.<DisplayObject>;
+		private var _crowdObject:Vector.<Personnage>;
 		
 		public function GameMenu(base:Main) 
 		{
@@ -27,21 +32,64 @@ package
 			border.graphics.endFill();
 			base.addChild(border);
 			
+			
+			_crowdObject = new Vector.<Personnage>();
+			for (var i:int = 0; i < 10; ++i)
+			{
+				var tmp:PNJ = new PNJ(base);
+				_crowdObject.push(tmp);
+			}
+			
+			_crowdDisplay = new Vector.<DisplayObject>();
+			for (i = 1; i < this.numChildren; i++)
+				if (this.getChildAt(i) is DisplayObject)
+					_crowdDisplay.push(this.getChildAt(i));
+			
 			var title:CustomText = new CustomText("Crowd Killer", 'Papyrus',44,0x890000, true, false);
 			title.x = base.width / 2 - title.textWidth / 2;
 			base.addChild(title);
 			
-			startButton = new CustomText("START", 'ImpactFont', 30, 0xc52d2d);
+			startButton = new CustomText("START GAME", 'ImpactFont', 30, 0xc52d2d);
 			startButton.x = base.width / 2 - startButton.textWidth / 2;
 			startButton.y = base.height / 2 - startButton.textHeight - 5;
+			startButton.border = true;
+			startButton.borderColor = 0x955f31;
 			base.addChild(startButton);
 			
-			var configButton:CustomText = new CustomText("CONFIG", 'ImpactFont',30,0xc52d2d);
+			var configButton:CustomText = new CustomText("OPTIONS", 'ImpactFont',30,0xc52d2d);
 			configButton.x = base.width / 2 - configButton.textWidth / 2;
 			configButton.y = base.height / 2 + 5;
+			configButton.border = true;
+			configButton.borderColor = 0x955f31;
 			base.addChild(configButton);
 			
 			configButton.addEventListener(MouseEvent.CLICK, config);
+			
+			base.addEventListener(Event.ENTER_FRAME, evtStageEnterFrame);
+		}
+		
+		private function evtStageEnterFrame(ev:Event):void
+		{
+			_crowdDisplay.sort(main.sorty);
+			
+			for (var i:int = 0; i < _crowdDisplay.length; i++)
+			{
+				this.setChildIndex(_crowdDisplay[i], i);
+			}
+			
+			var invert:Boolean = false;
+			
+			for (var n:int = 0; n < _crowdObject.length; ++n)
+			{
+				if (!invert && (_crowdObject[n].img.rotation >= Main.RANGLEMAX || _crowdObject[n].img.rotation <= -Main.RANGLEMAX))
+				{
+					invert = true;
+					_rs = -_rs;
+				}
+				_crowdObject[n].move();						// Déplacement des personnages
+				_crowdObject[n].img.rotation += _rs;		// Légère animation des personnages
+			}
+			trace(n);
 		}
 		
 		private function config(e:MouseEvent):void
@@ -156,12 +204,12 @@ package
 			change.text = "Press Any Key to\rReplace " + actualButton;
 			change.x = GameMenu.main.stage.width / 2 - change.textWidth / 2;
 			change.y = GameMenu.main.stage.height / 2 - change.textHeight / 2;
-			stage.addEventListener(KeyboardEvent.KEY_DOWN, changeKey);
+			main.stage.addEventListener(KeyboardEvent.KEY_DOWN, changeKey);
 		}
 		
 		private function changeKey(e:KeyboardEvent):void
 		{
-			stage.removeEventListener(KeyboardEvent.KEY_DOWN, changeKey);
+			main.stage.removeEventListener(KeyboardEvent.KEY_DOWN, changeKey);
 			GameMenu.main.getChildByName("Change").visible = false;
 			var str:String = this.actualButton.substr(0, 2);
 			GameMenu.main.getChildByName(str + "UP").visible = true;
@@ -171,6 +219,25 @@ package
 			GameMenu.main.getChildByName(str + "ATK").visible = true;
 			GameMenu.main.getChildByName("Back").visible = true;
 			Player[actualButton] = e.keyCode;
+		}
+		
+		public function endgame(p1:Boolean):void
+		{
+			main.removeListeners();
+			var str:String = (p1) ? "Player 2 wins !" : "Player 1 wins !";
+			
+			var endscr:CustomText = new CustomText(str, 'ImpactFont', 44 , 0x453033, true, false);
+			endscr.x = GameMenu.main.stage.width / 2 - endscr.textWidth / 2;
+			endscr.y = GameMenu.main.stage.height / 2 - endscr.textHeight * 2;
+			endscr.name = "EndMsg";
+			GameMenu.main.addChild(endscr);
+			
+			var back:CustomText = new CustomText("Return to menu", 'ImpactFont', 30 , 0x453033, true);
+			back.x = GameMenu.main.stage.width / 2 - back.textWidth / 2;
+			back.y = GameMenu.main.stage.height / 2 + endscr.textHeight / 2 + 50;
+			back.name = "EndBack";
+			GameMenu.main.addChild(back);
+			back.addEventListener(MouseEvent.CLICK, init);
 		}
 		
 		private function init(e:MouseEvent):void
