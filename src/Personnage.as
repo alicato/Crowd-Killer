@@ -13,7 +13,7 @@ package
 		public static const		PHEADMARGIN:int = 2;
 		public static const		PHEADSIZE:int = 5;
 		
-		protected var			_alive:Boolean;
+		//protected var			_alive:Boolean;
 		protected var			_img:Sprite;
 		
 		protected var			_left:Boolean;
@@ -31,7 +31,6 @@ package
 			_img = new Sprite();
 			var _posX:int = Math.random() * (GameEntity.WINDOWWIDTH - PWIDTH * 2) + PWIDTH;
 			var _posY:int = Math.random() * (GameEntity.WINDOWHEIGHT - PHEIGHT * 2) + PHEIGHT;
-			_alive = true;
 			_lastDir = Shuriken.RIGHTDIR;
 			
 			/*_img.graphics.lineStyle(2, 0); // katana
@@ -68,18 +67,19 @@ package
 			window.addChild(_img);
 			_img.x = _posX;
 			_img.y = _posY;
+			alive = true;
 		}
 		
 		/* Accesseurs */
 		
 		public function get alive():Boolean 
 		{
-			return _alive;
+			return _img.name == "Alive";
 		}
 				
 		public function set alive(value:Boolean):void 
 		{
-			_alive = value;
+			_img.name = (value) ? "Alive" : "Dead" ;
 		}
 		
 		public function get img():Sprite 
@@ -206,7 +206,7 @@ package
 		
 		public function die():void
 		{
-			this._alive = false;
+			this.alive = false;
 			if (Math.random() > 0.5)
 				this._img.rotation = 90;
 			else
