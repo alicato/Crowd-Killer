@@ -9,10 +9,10 @@ package
 	{
 		public static const	RIGHTDIR:int = 1;
 		public static const	LEFTDIR:int = 2;
-		public static const	SPEED:int = 2;
+		public static const	SPEED:int = 2;			// Si SPEED > Personnage.PWIDTH, il peut y avoir des problèmes de collision. 
 		public static const	WIDTH:int = 2;
 		public static const	BASEMR:int = 15;
-		static private const ROTATESPEED:int = 4;
+		static private const ROTATESPEED:int = 12;
 		
 		private var			_dir:int;
 		private var			_mr:int;

@@ -1,6 +1,7 @@
 package 
 {
 	import flash.display.Sprite;
+	import flash.geom.Matrix;
 	/**
 	 * ...
 	 * @author 42Ferra
@@ -75,6 +76,11 @@ package
 		{
 			return _alive;
 		}
+				
+		public function set alive(value:Boolean):void 
+		{
+			_alive = value;
+		}
 		
 		public function get img():Sprite 
 		{
@@ -90,6 +96,12 @@ package
 		{
 			_lastDir = value;
 		}
+		
+		public function get shuriken():Shuriken 
+		{
+			return _shuriken;
+		}
+
 		
 		/**************/
 		
@@ -119,21 +131,28 @@ package
 		
 		public function	attack():void
 		{
-			if (_shuriken)
+			if (_shuriken || !alive)
 				return ;
 			_shuriken = new Shuriken(lastDir, this);
 			_img.parent.addChild(_shuriken);
 		}
 		
-		public function moveShuriken():void
+		public function deleteShuriken():void
+		{
+			_img.parent.removeChild(_shuriken);
+			_shuriken = null;
+		}
+		
+		public function moveShuriken():Boolean
 		{
 			if (!_shuriken)
-				return ;
+				return false;
 			if (!_shuriken.move())
 			{
-				_img.parent.removeChild(_shuriken);
-				_shuriken = null;
+				deleteShuriken();
+				return false;
 			}
+			return true;
 		}
 		
 		public function move():void
