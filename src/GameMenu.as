@@ -89,7 +89,6 @@ package
 				_crowdObject[n].move();						// Déplacement des personnages
 				_crowdObject[n].img.rotation += _rs;		// Légère animation des personnages
 			}
-			trace(n);
 		}
 		
 		private function config(e:MouseEvent):void
